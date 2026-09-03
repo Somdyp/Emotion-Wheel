@@ -8,87 +8,57 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ground:#16202b;
-    --panel:#1d2937;
-    --raise:#243343;
-    --rule:#2f4055;
-    --ink:#eef3f8;
-    --muted:#93a6ba;
-    --accent:#f2b441;
-  }
+  :root{--ground:#16202b;--panel:#1d2937;--raise:#243343;--rule:#2f4055;--ink:#eef3f8;--muted:#93a6ba;--accent:#f2b441}
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{
-    background:var(--ground);
-    color:var(--ink);
-    font-family:"Inter Tight",system-ui,-apple-system,sans-serif;
-    font-size:15px;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:1080px;margin:0 auto;padding:38px 24px 64px}
-
-  header{margin-bottom:30px;max-width:56ch}
-  h1{
-    font-family:"Bricolage Grotesque",system-ui,sans-serif;
-    font-weight:800;
-    font-size:clamp(30px,5vw,44px);
-    line-height:1.02;
-    letter-spacing:-.025em;
-    margin:0 0 10px;
-  }
+  body{background:var(--ground);color:var(--ink);font-family:"Inter Tight",system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1280px;margin:0 auto;padding:36px 24px 64px}
+  header{margin-bottom:28px;max-width:60ch}
+  h1{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:clamp(30px,5vw,44px);line-height:1.02;letter-spacing:-.025em;margin:0 0 10px}
   header p{margin:0;color:var(--muted);font-size:15.5px}
 
-  .stage{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1fr);gap:40px;align-items:start}
-  @media(max-width:860px){.stage{grid-template-columns:1fr;gap:28px}}
+  .stage{display:grid;grid-template-columns:minmax(380px,1.25fr) minmax(320px,1fr);gap:44px;align-items:start}
+  @media(max-width:960px){.stage{grid-template-columns:1fr;gap:26px}}
+  .wheelcol{position:sticky;top:20px}
+  @media(max-width:960px){.wheelcol{position:static}}
+  svg{width:100%;max-width:720px;display:block;margin:0 auto;overflow:visible}
 
-  .wheelcol{position:sticky;top:28px}
-  @media(max-width:860px){.wheelcol{position:static}}
-  svg{width:100%;max-width:470px;display:block;margin:0 auto;overflow:visible}
+  .seg{cursor:pointer;stroke:#16202b;stroke-width:.9;transition:opacity .22s ease}
+  .seg:hover{filter:brightness(1.12)}
+  .seg:focus-visible{outline:none;stroke:#fff;stroke-width:2.4}
+  .dim{opacity:.17}
+  .lit{stroke:#fff;stroke-width:2.4}
+  .lbl{fill:#16202b;font-family:"Inter Tight",sans-serif;font-weight:600;pointer-events:none}
+  #needle{transform-box:view-box;transform-origin:360px 360px;transition:transform 3.6s cubic-bezier(.17,.92,.24,1)}
+  .hubtxt{font-family:"Inter Tight",sans-serif;text-anchor:middle}
 
-  .seg{cursor:pointer;stroke:var(--ground);stroke-width:1.25;transition:opacity .25s ease}
-  .seg:hover{filter:brightness(1.14)}
-  .seg:focus-visible{outline:none;stroke:#fff;stroke-width:2.5}
-  .dim{opacity:.26}
-  .lit{stroke:#fff;stroke-width:2.5}
-  .lbl{fill:#14202c;font-family:"Inter Tight",sans-serif;font-weight:600;pointer-events:none;letter-spacing:.005em}
-  #needle{transform-box:view-box;transform-origin:200px 200px;transition:transform 3.6s cubic-bezier(.17,.92,.24,1)}
-  .hubtxt{fill:var(--muted);font-family:"Inter Tight",sans-serif;font-size:8.5px;text-anchor:middle}
-
-  .controls{display:flex;gap:10px;justify-content:center;margin-top:22px;flex-wrap:wrap}
-  button{
-    font-family:inherit;font-size:14px;font-weight:500;
-    border-radius:999px;padding:10px 20px;cursor:pointer;
-    border:1px solid var(--rule);background:var(--raise);color:var(--ink);
-    transition:background .18s ease,border-color .18s ease;
-  }
+  .controls{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+  button{font-family:inherit;font-size:14px;font-weight:500;border-radius:999px;padding:10px 20px;cursor:pointer;border:1px solid var(--rule);background:var(--raise);color:var(--ink);transition:background .18s ease,border-color .18s ease}
   button:hover{background:#2c3d50;border-color:#41576f}
   button:disabled{opacity:.45;cursor:default}
   button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .primary{background:var(--accent);border-color:var(--accent);color:#1a1206;font-weight:600}
   .primary:hover{background:#ffc85c;border-color:#ffc85c}
+  .status{font-size:13px;color:var(--muted);min-height:18px;margin-top:9px;text-align:center}
 
-  .panel{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:26px 26px 24px;min-height:420px}
-  .empty{color:var(--muted)}
-  .empty h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:19px;color:var(--ink);margin:0 0 10px}
-  .empty ol{margin:0;padding-left:18px}
-  .empty li{margin-bottom:7px}
+  .panel{background:var(--panel);border:1px solid var(--rule);border-radius:14px;padding:26px 26px 24px;min-height:520px}
+  .empty h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:19px;margin:0 0 12px}
+  .rings{list-style:none;margin:0 0 16px;padding:0}
+  .rings li{display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--rule);color:var(--muted)}
+  .rings li b{color:var(--ink);font-weight:600;flex:none;width:82px}
+  .empty p{color:var(--muted);margin:0}
 
-  .lineage{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:13.5px;margin-bottom:6px}
+  .lineage{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13.5px;margin-bottom:7px;flex-wrap:wrap}
   .swatch{width:11px;height:11px;border-radius:3px;flex:none}
-  .name{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(28px,4.4vw,38px);line-height:1.05;letter-spacing:-.02em;margin:0 0 4px}
-  .sounds{font-size:17px;color:var(--ink);margin:0 0 22px;font-style:italic;opacity:.9}
-
-  .block{border-top:1px solid var(--rule);padding-top:15px;margin-top:15px}
-  .block h3{font-family:"Inter Tight",sans-serif;font-size:13px;font-weight:600;color:var(--muted);margin:0 0 7px}
+  .name{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(28px,4.2vw,38px);line-height:1.05;letter-spacing:-.02em;margin:0 0 6px}
+  .reg{font-size:17px;margin:0 0 20px;font-style:italic;opacity:.92;max-width:46ch}
+  .block{border-top:1px solid var(--rule);padding-top:14px;margin-top:14px}
+  .block h3{font-size:13px;font-weight:600;color:var(--muted);margin:0 0 7px}
   .block p{margin:0;max-width:52ch}
-  ul.hooks{list-style:none;margin:0;padding:0}
-  ul.hooks li{padding:8px 0 8px 16px;border-left:2px solid var(--rule);margin-bottom:7px;max-width:52ch}
-  ul.hooks li:last-child{margin-bottom:0}
-
+  .hook{padding:9px 0 9px 16px;border-left:2px solid var(--accent);max-width:52ch}
+  .subs{display:flex;flex-wrap:wrap;gap:7px;margin:0;padding:0;list-style:none}
+  .subs li{border:1px solid var(--rule);border-radius:999px;padding:4px 12px;font-size:13.5px;color:var(--muted)}
   .foot{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
-  .status{font-size:13px;color:var(--muted);min-height:18px;margin-top:10px;text-align:center}
   @media(prefers-reduced-motion:reduce){#needle{transition:none}}
 </style>
 </head>
@@ -96,234 +66,337 @@
 <div class="wrap">
   <header>
     <h1>What should this ad make them feel?</h1>
-    <p>Click any emotion to get the job it does in an ad, the angle it wants, and hooks to start from. Or spin it and let the wheel pick your constraint.</p>
+    <p>130 emotions across three rings. Click anything for the exact register it puts a person in, the job it does in an ad, and a hook written in that voice. Or spin and let the wheel set the constraint.</p>
   </header>
-
   <div class="stage">
     <div class="wheelcol">
-      <svg id="wheel" viewBox="0 0 400 400" role="group" aria-label="Emotion wheel"></svg>
+      <svg id="wheel" viewBox="0 0 720 720" role="group" aria-label="Emotion wheel"></svg>
       <div class="controls">
         <button class="primary" id="spin">Spin the wheel</button>
         <button id="clear">Clear</button>
       </div>
       <div class="status" id="status"></div>
     </div>
-
     <div class="panel" id="panel"></div>
   </div>
 </div>
 
 <script>
-const DATA = [
-  { name:"Joy", color:"#f2b441",
-    job:"Sells the after. You show the life the product makes possible, then let the price be the small cost of admission.",
-    angle:"Lead with the outcome moment instead of the problem. Fastest version: a testimonial filmed at peak relief, before any explanation.",
-    shades:[
-      { name:"Serenity", sounds:"Finally, nothing left to manage.", hooks:["I stopped thinking about it entirely.","It's the most boring part of my day now, and that's the point."] },
-      { name:"Delight", sounds:"That worked better than it had any right to.", hooks:["I was not expecting this to do anything.","Three days in and I texted my sister about it."] },
-      { name:"Ecstasy", sounds:"Full conversion, said out loud.", hooks:["I've told everyone who will sit still long enough.","This ruined every other one I'd tried."] }
-    ]},
-  { name:"Trust", color:"#6fae7c",
-    job:"Lowers perceived risk. Trust doesn't sell the outcome — it sells believing you about the outcome.",
-    angle:"Put proof in front of promise: founder on camera, sourcing, a third-party test, the refund terms said plainly.",
-    shades:[
-      { name:"Acceptance", sounds:"Fine, I'll hear you out.", hooks:["You've probably already tried three of these.","Here's what we're not going to claim."] },
-      { name:"Admiration", sounds:"These people clearly know what they're doing.", hooks:["We spent fourteen months on one ingredient.","Our formulator spent a decade doing this for someone else."] },
-      { name:"Devotion", sounds:"This is my brand now.", hooks:["Sixth bottle. Same routine.","I don't shop this category anymore. I just reorder."] }
-    ]},
-  { name:"Fear", color:"#3f9a93",
-    job:"Creates urgency by making the cost of doing nothing visible and near.",
-    angle:"Name one specific consequence with a timeline — vague dread doesn't convert, dated dread does. Then hand them the exit immediately.",
-    shades:[
-      { name:"Apprehension", sounds:"Something's slightly off and I've noticed.", hooks:["If you're flat by 3pm, this is usually why.","It starts small enough to keep ignoring."] },
-      { name:"Anxiety", sounds:"This is going to get worse if I leave it.", hooks:["The part nobody warns you about is what comes next.","By the time you notice it, it's been going on for months."] },
-      { name:"Terror", sounds:"Act now or lose something real.", hooks:["I ignored this for two years and paid for it.","Here's what waiting actually costs."] }
-    ]},
-  { name:"Surprise", color:"#5a8fd0",
-    job:"Buys attention in the first second. It sells nothing on its own — it stops the scroll and hands the next line an audience.",
-    angle:"Break a category expectation visually or verbally, then convert that attention into a claim within two seconds or you lose it.",
-    shades:[
-      { name:"Distraction", sounds:"Wait — what is that?", hooks:["Don't scroll, I need eight seconds.","This is not what it looks like."] },
-      { name:"Amazement", sounds:"That's not how I thought it worked.", hooks:["You've been doing this backwards the whole time.","Watch what happens at four seconds."] },
-      { name:"Astonishment", sounds:"That can't be right.", hooks:["This cost twelve dollars and replaced a four hundred dollar one.","I filmed it because nobody believed me."] }
-    ]},
-  { name:"Sadness", color:"#6a6dc0",
-    job:"Builds identification. The viewer sees their own situation named honestly and stays to watch it resolve.",
-    angle:"Open in the low moment before the fix, in specific physical detail. Earn the turn — cutting to the product too early kills it.",
-    shades:[
-      { name:"Pensiveness", sounds:"I've been sitting with this a while.", hooks:["I didn't realise how long I'd felt like that.","Nothing was wrong. That was the problem."] },
-      { name:"Disappointment", sounds:"I expected more than this.", hooks:["This is the fourth one I've bought this year.","It worked for two weeks and then it didn't."] },
-      { name:"Grief", sounds:"I lost something I wanted back.", hooks:["I stopped doing the thing I liked most.","I gave up a whole year to this."] }
-    ]},
-  { name:"Disgust", color:"#8f63be",
-    job:"Creates rejection of an alternative. Point it at the competitor, the old way, or the ingredient — never at the viewer.",
-    angle:"Show the thing they should reject in close, physical detail, then stand next to it as the clean version.",
-    shades:[
-      { name:"Boredom", sounds:"Same as everything else out there.", hooks:["Another gummy. I know.","This category has been asleep for ten years."] },
-      { name:"Aversion", sounds:"I don't want that near me.", hooks:["Turn over the bottle you're holding and read line four.","Here's what's actually in the one you buy."] },
-      { name:"Loathing", sounds:"That should not be allowed.", hooks:["They're legally allowed to call this natural.","It's legal. That's the whole problem."] }
-    ]},
-  { name:"Anger", color:"#d4564f",
-    job:"Recruits an ally. Point at a shared villain so the viewer is on your side before you've sold anything.",
-    angle:"Name the villain precisely — a practice, a markup, a lie. Then be the correction, not the complaint.",
-    shades:[
-      { name:"Annoyance", sounds:"Small thing, but every single day.", hooks:["It's a two-second problem you have forty times a day.","Why is this still like this?"] },
-      { name:"Frustration", sounds:"I've tried and it doesn't work.", hooks:["I did everything right and nothing changed.","You're not the problem here."] },
-      { name:"Rage", sounds:"Someone did this on purpose.", hooks:["They know it doesn't work. They sell it anyway.","You've been paying for water and packaging."] }
-    ]},
-  { name:"Anticipation", color:"#de8639",
-    job:"Holds attention through the middle. It's the open loop that keeps people watching long enough to hear the mechanism.",
-    angle:"Promise a specific reveal early, then delay it. Works as the spine under any other emotion rather than the whole ad.",
-    shades:[
-      { name:"Curiosity", sounds:"I want to know how that works.", hooks:["There's one reason this works and it isn't the ingredient on the front.","Give me thirty seconds and this will annoy you for a week."] },
-      { name:"Interest", sounds:"Keep going, I'm listening.", hooks:["Three things happen when you do this. The third one matters.","Here's the part I got wrong first."] },
-      { name:"Vigilance", sounds:"I'm watching for it now.", hooks:["You'll notice it around day four.","Check this next time you're standing in the aisle."] }
-    ]}
+const WHEEL=[
+{c:"Happy",col:"#e8c341",
+ job:"Sells the after. Show the life the product makes possible and let the price be the entry fee.",
+ angle:"Open on the outcome moment, not the problem. A testimonial filmed at peak relief converts fastest.",
+ sub:[
+  {n:"Playful",reg:"Nothing here is serious, and that's the appeal.",job:"Lowers the guard on a boring category. Works as a pattern break, not as an argument.",hook:"We probably shouldn't have made this.",t:[
+    {n:"Aroused",reg:"Wanting it physically, before thinking.",hook:"I saw it and I just bought it."},
+    {n:"Cheeky",reg:"Getting away with something small.",hook:"Your dentist doesn't need to know about this."}]},
+  {n:"Content",reg:"This is enough. I've stopped looking.",job:"Sells the end of the search. Aim at people exhausted by having options.",hook:"I've stopped trying other ones.",t:[
+    {n:"Free",reg:"The constraint is gone.",hook:"No subscription, no app, no account."},
+    {n:"Joyful",reg:"Uncomplicated, unmixed good.",hook:"It's just a nice part of the morning now."}]},
+  {n:"Interested",reg:"Tell me more, I'm leaning in.",job:"Holds the middle of the ad. The mechanism section lives here.",hook:"Here's the part that actually does the work.",t:[
+    {n:"Curious",reg:"I want to know how that works.",hook:"One ingredient does about eighty percent of this."},
+    {n:"Inquisitive",reg:"I'm going to go and check this myself.",hook:"Search the study yourself. We'll wait."}]},
+  {n:"Proud",reg:"I did that, and I want it seen.",job:"Sells identity. The buyer is purchasing evidence of who they are.",hook:"It took four months. I'd do it again.",t:[
+    {n:"Successful",reg:"I cleared the bar.",hook:"First time the number actually moved."},
+    {n:"Confident",reg:"I've stopped second-guessing.",hook:"I stopped checking the mirror before I leave."}]},
+  {n:"Accepted",reg:"I belong here without performing.",job:"Sells membership. Strong for community-led and niche brands.",hook:"Turns out a lot of us have this.",t:[
+    {n:"Respected",reg:"They take me seriously.",hook:"Made for people who already know what they're doing."},
+    {n:"Valued",reg:"Someone noticed me specifically.",hook:"We read every single one of these."}]},
+  {n:"Powerful",reg:"I can act on this now.",job:"Sells agency. Best placed after a long problem sequence.",hook:"You can fix this yourself, today.",t:[
+    {n:"Courageous",reg:"I'm going to try the thing.",hook:"I booked it before I could talk myself out of it."},
+    {n:"Creative",reg:"I can make something with this.",hook:"I've used it for four things it wasn't designed for."}]},
+  {n:"Peaceful",reg:"Nothing needs managing.",job:"Sells the absence of a problem. Hard to dramatise, so show stillness rather than describe it.",hook:"It's the most boring part of my day now.",t:[
+    {n:"Loving",reg:"Warmth toward someone specific.",hook:"I bought it for her. I use it more than she does."},
+    {n:"Thankful",reg:"Someone made this easier for me.",hook:"I didn't realise how much I needed this."}]},
+  {n:"Trusting",reg:"I've stopped checking.",job:"Sells low risk. Put proof ahead of promise and let the terms do the talking.",hook:"Here's what we're not going to claim.",t:[
+    {n:"Sensitive",reg:"I want handling with care.",hook:"For skin that reacts to everything."},
+    {n:"Intimate",reg:"This is close, private, mine.",hook:"Nobody else needs to know about this."}]},
+  {n:"Optimistic",reg:"This is going to work out.",job:"Sets tone, not urgency. Pair it with a harder emotion doing the actual selling.",hook:"This is easier than you think.",t:[
+    {n:"Hopeful",reg:"Wanting it despite having failed before.",hook:"Fourth thing I've tried. First one that held."},
+    {n:"Inspired",reg:"I want to start right now.",hook:"I watched someone do it and thought, why not me."}]}
+]},
+
+{c:"Surprised",col:"#a98cd4",
+ job:"Buys the first second. Sells nothing on its own — it stops the scroll and hands the next line an audience.",
+ angle:"Break a category expectation in vision or language, then convert to a claim within two seconds or you lose it.",
+ sub:[
+  {n:"Startled",reg:"An involuntary stop.",job:"Pure scroll-stop. Must be paid off immediately or it reads as clickbait.",hook:"Don't scroll. Eight seconds.",t:[
+    {n:"Shocked",reg:"That is not what I expected to see.",hook:"This is what came out of the filter."},
+    {n:"Dismayed",reg:"That's worse than I thought.",hook:"I ran the test hoping I'd be wrong."}]},
+  {n:"Confused",reg:"I don't understand and I need to.",job:"Creates an open loop. Only safe if you resolve it fast.",hook:"None of this makes sense until you see the second one.",t:[
+    {n:"Disillusioned",reg:"The thing I believed isn't true.",hook:"It never worked. Not once."},
+    {n:"Perplexed",reg:"Two facts that don't fit together.",hook:"Same ingredient. Ten times the price."}]},
+  {n:"Amazed",reg:"I didn't know that was possible.",job:"Transfers credibility. Best used on mechanism and manufacturing.",hook:"Watch what happens at four seconds.",t:[
+    {n:"Astonished",reg:"That can't be right.",hook:"Twelve dollars replaced a four hundred dollar one."},
+    {n:"Awe",reg:"This is bigger than I can hold.",hook:"Forty thousand tests before one bottle ships."}]},
+  {n:"Excited",reg:"I want in, now.",job:"Converts attention into motion. Sits directly before the CTA.",hook:"It's live, and there are two hundred.",t:[
+    {n:"Eager",reg:"I'd start today.",hook:"Ships tomorrow if you order tonight."},
+    {n:"Energetic",reg:"I have momentum I didn't have.",hook:"First week I got more done than the month before."}]}
+]},
+
+{c:"Bad",col:"#68c39b",
+ job:"Names low-grade daily friction. Not dramatic, but it's the state most buyers are actually in.",
+ angle:"Show the ordinary version of the problem in physical detail. Recognition matters more than intensity here.",
+ sub:[
+  {n:"Tired",reg:"Running on nothing.",job:"Highest-recognition state in wellness. Lead with the specific hour of the day.",hook:"If you're flat by 3pm, this is usually why.",t:[
+    {n:"Unfocussed",reg:"I read the same line four times.",hook:"I open the laptop and lose an hour."},
+    {n:"Sleepy",reg:"Awake, but not really.",hook:"Eight hours and I still felt like this."}]},
+  {n:"Stressed",reg:"More load than capacity.",job:"Sells relief. Show the load physically before you show the fix.",hook:"Everything's fine and I still can't breathe.",t:[
+    {n:"Out of control",reg:"It's running me.",hook:"I stopped making decisions and started reacting."},
+    {n:"Overwhelmed",reg:"I don't know where to start.",hook:"Twenty-three tabs and no plan."}]},
+  {n:"Busy",reg:"No slack anywhere in the day.",job:"Sells time back. Quantify the minutes rather than describing the feeling.",hook:"It's four minutes. That's the whole thing.",t:[
+    {n:"Rushed",reg:"Always slightly late.",hook:"I eat standing up most days."},
+    {n:"Pressured",reg:"Working to someone else's deadline.",hook:"By the time I get to my own list it's seven."}]},
+  {n:"Bored",reg:"Nothing here interests me.",job:"Aim it at the category, never at the viewer. It sets up your difference.",hook:"This category's been asleep for ten years.",t:[
+    {n:"Apathetic",reg:"I've stopped caring whether it works.",hook:"I take it because I bought it."},
+    {n:"Indifferent",reg:"All of these look the same.",hook:"Another gummy with a cartoon on the front."}]}
+]},
+
+{c:"Fearful",col:"#dfb46a",
+ job:"Creates urgency by making the cost of doing nothing visible and near.",
+ angle:"One specific consequence with a timeline, then the exit immediately. Vague dread doesn't convert; dated dread does.",
+ sub:[
+  {n:"Scared",reg:"Something bad is close.",job:"The highest-risk lever here. Only defensible with a real, dated consequence.",hook:"Here's what waiting actually costs.",t:[
+    {n:"Helpless",reg:"There's nothing I can do about it.",hook:"I'd tried everything I knew about."},
+    {n:"Frightened",reg:"It's happening now.",hook:"The scan is what changed it for me."}]},
+  {n:"Anxious",reg:"Something's coming and I can't name it.",job:"Sells control and predictability rather than cure.",hook:"You'll know by day four.",t:[
+    {n:"Overwhelmed",reg:"Too much at once.",hook:"It's not one thing. It's all of it."},
+    {n:"Worried",reg:"It's on my mind at 2am.",hook:"I kept checking. That was the tell."}]},
+  {n:"Insecure",reg:"I'm not sure I measure up.",job:"Handle carefully. Resolve it inside the ad or you've just done harm and left.",hook:"Nobody said anything, which was somehow worse.",t:[
+    {n:"Inadequate",reg:"Everyone else has this handled.",hook:"I assumed I was the only one."},
+    {n:"Inferior",reg:"They're better at this than me.",hook:"She started the same month I did."}]},
+  {n:"Weak",reg:"I don't have what this needs.",job:"Sells capability. Show the smallest possible first step, not the full transformation.",hook:"Start with four minutes.",t:[
+    {n:"Worthless",reg:"None of my effort counted.",hook:"Two years and nothing to show for it."},
+    {n:"Insignificant",reg:"Nobody would notice if I stopped.",hook:"I did the work and someone else got asked."}]},
+  {n:"Rejected",reg:"I was left out of it.",job:"Sells belonging. Very strong for community-led brands.",hook:"Turns out there are a lot of us.",t:[
+    {n:"Excluded",reg:"The room carried on without me.",hook:"Everyone I know started before June."},
+    {n:"Persecuted",reg:"It's aimed at me specifically.",hook:"The whole category is built for someone else's body."}]},
+  {n:"Threatened",reg:"Something is coming for what's mine.",job:"Sells defence. Strong in finance, security and insurance.",hook:"It takes eleven minutes to lose it.",t:[
+    {n:"Nervous",reg:"I'm braced.",hook:"I check the balance before I check the news."},
+    {n:"Exposed",reg:"I've got no cover.",hook:"There's nothing between you and it right now."}]}
+]},
+
+{c:"Angry",col:"#e07b74",
+ job:"Recruits an ally. Point at a shared villain and the viewer is on your side before you've sold anything.",
+ angle:"Name the villain precisely — a practice, a markup, a lie. Then be the correction, not the complaint.",
+ sub:[
+  {n:"Let down",reg:"You said you'd handle it.",job:"Converts a competitor's customers faster than anything else. Needs a receipt.",hook:"They ran the study. Then they buried it.",t:[
+    {n:"Betrayed",reg:"You knew, and you didn't tell me.",hook:"It's on the label, in a font you can't read."},
+    {n:"Resentful",reg:"I'm still carrying it.",hook:"Three years of paying for nothing."}]},
+  {n:"Humiliated",reg:"It happened in front of people.",job:"Extremely sharp. Only the customer may voice this — never the brand.",hook:"I'd cancel plans rather than explain it.",t:[
+    {n:"Disrespected",reg:"They didn't take me seriously.",hook:"The doctor told me it was stress."},
+    {n:"Ridiculed",reg:"I was the joke.",hook:"I stopped bringing it up."}]},
+  {n:"Bitter",reg:"It shouldn't have gone that way.",job:"Fuels a values case. Convert it into a standard, not a grudge.",hook:"Nobody was going to fix this, so we did.",t:[
+    {n:"Indignant",reg:"That breaks a rule we all agreed on.",hook:"This is legal. That's the problem."},
+    {n:"Violated",reg:"A line was crossed.",hook:"They sold the data. All of it."}]},
+  {n:"Mad",reg:"Direct, hot, aimed at a target.",job:"Highest energy, lowest precision. Use it in the hook, not the body.",hook:"You've been paying for water and packaging.",t:[
+    {n:"Furious",reg:"I can't let this go.",hook:"I found out and then I couldn't sleep."},
+    {n:"Jealous",reg:"They have what should be mine.",hook:"We were on the same salary two years ago."}]},
+  {n:"Aggressive",reg:"I'm going after it.",job:"Sells decisive action. Fits challenger and performance brands.",hook:"Stop managing it. End it.",t:[
+    {n:"Provoked",reg:"They started this.",hook:"They raised the price again. Fine."},
+    {n:"Hostile",reg:"I'm against them now.",hook:"I'll never buy from them again."}]},
+  {n:"Frustrated",reg:"I've tried and it isn't working.",job:"The most common state of a paying audience. Blame the system, never the person.",hook:"You did everything right. The method's wrong.",t:[
+    {n:"Infuriated",reg:"This is the tenth time.",hook:"Tenth product. Same result."},
+    {n:"Annoyed",reg:"Small, constant, daily.",hook:"A two-second problem you have forty times a day."}]},
+  {n:"Distant",reg:"I've disengaged from this.",job:"The hardest audience to reach. Re-entry needs surprise, not argument.",hook:"You've stopped reading these. Fair enough.",t:[
+    {n:"Withdrawn",reg:"I stopped participating.",hook:"I unsubscribed from all of it."},
+    {n:"Numb",reg:"I don't feel anything about it either way.",hook:"I stopped expecting it to work."}]},
+  {n:"Critical",reg:"Prove it.",job:"The default state of a good audience. Answer with evidence, not enthusiasm.",hook:"Don't believe us. Here's the batch number.",t:[
+    {n:"Sceptical",reg:"This sounds like the last one.",hook:"You've heard this claim before. Here's the difference."},
+    {n:"Dismissive",reg:"Not even worth checking.",hook:"Thirty seconds, then dismiss it."}]}
+]},
+
+{c:"Disgusted",col:"#a3a3a3",
+ job:"Creates rejection of an alternative. Point it at the competitor, the old way, or the ingredient — never the viewer.",
+ angle:"Show the thing they should reject in close physical detail, then stand next to it as the clean version.",
+ sub:[
+  {n:"Disapproving",reg:"That is not acceptable.",job:"Sets a standard the audience then adopts as their own.",hook:"They're allowed to write natural on that.",t:[
+    {n:"Judgmental",reg:"I've made my decision about them.",hook:"You can tell which ones are made properly."},
+    {n:"Embarrassed",reg:"I don't want to be associated with it.",hook:"I hid the bottle when people came over."}]},
+  {n:"Disappointed",reg:"I expected better than this.",job:"Bridges into your alternative without attacking the buyer for having chosen wrong.",hook:"It worked for two weeks and then it didn't.",t:[
+    {n:"Appalled",reg:"I can't believe that's allowed.",hook:"Read what's in the one on your shelf."},
+    {n:"Revolted",reg:"Physical rejection.",hook:"I poured the rest of it out."}]},
+  {n:"Awful",reg:"This is genuinely bad.",job:"Peak contrast setup. Keep it short — dwelling here costs goodwill.",hook:"Here's what's actually in it.",t:[
+    {n:"Nauseated",reg:"My body rejects this.",hook:"I gagged on the last one."},
+    {n:"Detestable",reg:"It shouldn't exist.",hook:"They know it doesn't work. They sell it anyway."}]},
+  {n:"Repelled",reg:"Get it away from me.",job:"Drives switching. Make the alternative physically vivid, not statistically bad.",hook:"Turn it over and read line four.",t:[
+    {n:"Horrified",reg:"I've seen too much now.",hook:"I watched how it's made and stopped that day."},
+    {n:"Hesitant",reg:"I'm not sure I want to.",hook:"I nearly didn't try another one."}]}
+]},
+
+{c:"Sad",col:"#7fa8dc",
+ job:"Builds identification. The viewer sees their own situation named honestly and stays for the resolution.",
+ angle:"Open in the low moment before the fix, in specific physical detail. Earn the turn — cutting to product too early kills it.",
+ sub:[
+  {n:"Lonely",reg:"Nobody else is in this with me.",job:"Sells community. Lead with the admission, not the product.",hook:"I thought it was just me.",t:[
+    {n:"Isolated",reg:"I'm cut off.",hook:"I stopped going to things."},
+    {n:"Abandoned",reg:"They left me with it.",hook:"The support ended the day I paid."}]},
+  {n:"Vulnerable",reg:"I'm exposed and I know it.",job:"Builds trust through symmetry. The founder goes first or it doesn't work.",hook:"I'll go first. Here's mine.",t:[
+    {n:"Victimised",reg:"This was done to me.",hook:"I did exactly what they told me to do."},
+    {n:"Fragile",reg:"One more thing would tip it.",hook:"I didn't have another attempt in me."}]},
+  {n:"Despair",reg:"It isn't going to change.",job:"Only usable when you have a real mechanism behind it. Otherwise it's cruelty with a CTA.",hook:"I'd accepted this was permanent.",t:[
+    {n:"Grief",reg:"I lost something I wanted.",hook:"I gave up the thing I liked most."},
+    {n:"Powerless",reg:"Nothing I do moves it.",hook:"Nothing I tried made any difference."}]},
+  {n:"Guilty",reg:"I did something I shouldn't have.",job:"Aim at the choice, never the person. Offer the correction fast.",hook:"It's the system. It isn't you.",t:[
+    {n:"Ashamed",reg:"It's what I am, not what I did.",hook:"I stopped taking photos for about three years."},
+    {n:"Remorseful",reg:"I'd take it back if I could.",hook:"I wish I'd started two years ago."}]},
+  {n:"Depressed",reg:"Flat, ongoing, colourless.",job:"Handle with care and no urgency. Sell one small first step and nothing more.",hook:"Start with one thing.",t:[
+    {n:"Empty",reg:"Nothing lands.",hook:"Nothing was wrong. That was the problem."},
+    {n:"Inferior",reg:"Everyone's ahead of me.",hook:"I stopped looking at what other people were doing."}]},
+  {n:"Hurt",reg:"Something specific wounded me.",job:"Names the incident. Specificity is the entire mechanism here.",hook:"It was one sentence and I still think about it.",t:[
+    {n:"Disappointed",reg:"You didn't come through.",hook:"Fourth one this year."},
+    {n:"Embarrassed",reg:"I was seen failing.",hook:"I had to explain it at work."}]}
+]}
 ];
 
-const CX=200, CY=200;
-const R_IN0=62, R_IN1=118, R_OUT1=186;
-const svg=document.getElementById('wheel');
-const panel=document.getElementById('panel');
-const statusEl=document.getElementById('status');
+const CX=360,CY=360,R_HUB=58,R_A1=128,R_B1=218,R_C1=332;
+const svg=document.getElementById('wheel'),panel=document.getElementById('panel'),statusEl=document.getElementById('status');
 const NS='http://www.w3.org/2000/svg';
-
-const el=(t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;};
-const pt=(r,a)=>{const t=(a-90)*Math.PI/180;return[CX+r*Math.cos(t),CY+r*Math.sin(t)];};
-
+const el=(t,a)=>{const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n};
+const pt=(r,a)=>{const t=(a-90)*Math.PI/180;return[CX+r*Math.cos(t),CY+r*Math.sin(t)]};
 function arc(r1,r2,a1,a2){
   const [x1,y1]=pt(r2,a1),[x2,y2]=pt(r2,a2),[x3,y3]=pt(r1,a2),[x4,y4]=pt(r1,a1);
   const big=(a2-a1)>180?1:0;
   return `M${x1} ${y1}A${r2} ${r2} 0 ${big} 1 ${x2} ${y2}L${x3} ${y3}A${r1} ${r1} 0 ${big} 0 ${x4} ${y4}Z`;
 }
-
+function lighten(hex,f){
+  const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+  const c=v=>Math.round(v).toString(16).padStart(2,'0');
+  const [r,g,b]=p(hex);
+  return `#${c(r+(255-r)*f)}${c(g+(255-g)*f)}${c(b+(255-b)*f)}`;
+}
 function label(text,mid,rIn,rOut,size){
-  const left = mid>180;
-  const r = left ? rOut-7 : rIn+7;
-  const [x,y]=pt(r,mid);
-  const rot = left ? mid+90 : mid-90;
+  const m=((mid%360)+360)%360, left=m>180;
+  const r=left?rOut-7:rIn+7;
+  const [x,y]=pt(r,m), rot=left?m+90:m-90;
   const t=el('text',{x,y,class:'lbl','font-size':size,'text-anchor':'start','dominant-baseline':'middle',transform:`rotate(${rot} ${x} ${y})`});
-  t.textContent=text;
-  return t;
+  t.textContent=text;return t;
 }
 
-const segs=[];   // {node, coreIdx, shadeIdx|null, mid}
-const shadeAngles=[];
+const totalSub=WHEEL.reduce((s,c)=>s+c.sub.length,0);
+const U=360/totalSub;
+const segs=[],spinTargets=[];
+let cursor=0;
 
-DATA.forEach((core,i)=>{
-  const a1=i*45, a2=a1+45;
-  const p=el('path',{d:arc(R_IN0,R_IN1,a1,a2),fill:core.color,class:'seg',tabindex:'0',role:'button','aria-label':core.name});
-  svg.appendChild(p);
-  segs.push({node:p,core:i,shade:null});
-  svg.appendChild(label(core.name,(a1+a2)/2,R_IN0,R_IN1,9.4));
+WHEEL.forEach((core,ci)=>{
+  const span=core.sub.length*U, cStart=cursor;
+  const cs=el('path',{d:arc(R_HUB,R_A1,cStart,cStart+span),fill:core.col,class:'seg',tabindex:'0',role:'button','aria-label':core.c});
+  svg.appendChild(cs);
+  segs.push({node:cs,ci,si:null,ti:null});
+  svg.appendChild(label(core.c,cStart+span/2,R_HUB,R_A1,13));
 
-  core.shades.forEach((sh,j)=>{
-    const b1=a1+j*15, b2=b1+15, mid=b1+7.5;
-    const q=el('path',{d:arc(R_IN1,R_OUT1,b1,b2),fill:core.color,class:'seg',tabindex:'0',role:'button','aria-label':sh.name,'fill-opacity':(0.92-j*0.18).toFixed(2)});
-    svg.appendChild(q);
-    segs.push({node:q,core:i,shade:j});
-    shadeAngles.push({core:i,shade:j,mid});
-    svg.appendChild(label(sh.name,mid,R_IN1,R_OUT1,8.4));
+  core.sub.forEach((sub,si)=>{
+    const sStart=cursor;
+    const ss=el('path',{d:arc(R_A1,R_B1,sStart,sStart+U),fill:lighten(core.col,.24),class:'seg',tabindex:'0',role:'button','aria-label':sub.n});
+    svg.appendChild(ss);
+    segs.push({node:ss,ci,si,ti:null});
+    spinTargets.push({ci,si,ti:null,mid:sStart+U/2});
+    svg.appendChild(label(sub.n,sStart+U/2,R_A1,R_B1,10.5));
+
+    sub.t.forEach((ter,ti)=>{
+      const tStart=sStart+ti*(U/2), mid=tStart+U/4;
+      const ts=el('path',{d:arc(R_B1,R_C1,tStart,tStart+U/2),fill:lighten(core.col,.46),class:'seg',tabindex:'0',role:'button','aria-label':ter.n});
+      svg.appendChild(ts);
+      segs.push({node:ts,ci,si,ti});
+      spinTargets.push({ci,si,ti,mid});
+      svg.appendChild(label(ter.n,mid,R_B1,R_C1,9.6));
+    });
+    cursor+=U;
   });
 });
 
-// hub
-svg.appendChild(el('circle',{cx:CX,cy:CY,r:R_IN0-2,fill:'#1d2937',stroke:'#2f4055','stroke-width':1}));
-const h1=el('text',{x:CX,y:CY-5,class:'hubtxt','font-size':'9.5','font-weight':'600',fill:'#eef3f8'});h1.textContent='32 targets';
-const h2=el('text',{x:CX,y:CY+9,class:'hubtxt'});h2.textContent='pick one per ad';
+svg.appendChild(el('circle',{cx:CX,cy:CY,r:R_HUB-3,fill:'#1d2937',stroke:'#2f4055','stroke-width':1}));
+const h1=el('text',{x:CX,y:CY-6,class:'hubtxt','font-size':'14','font-weight':'600',fill:'#eef3f8'});h1.textContent='130';
+const h2=el('text',{x:CX,y:CY+11,class:'hubtxt','font-size':'10',fill:'#93a6ba'});h2.textContent='pick one';
 svg.appendChild(h1);svg.appendChild(h2);
 
-// needle
 const needle=el('g',{id:'needle'});
-needle.appendChild(el('path',{d:`M${CX} ${CY-190} l7 -12 l-14 0 Z`,fill:'#eef3f8'}));
+needle.appendChild(el('path',{d:`M${CX} ${CY-340} l7 -13 l-14 0 Z`,fill:'#eef3f8'}));
 svg.appendChild(needle);
 
-let turns=0, spinning=false, current=null;
+let turns=0,spinning=false;
+const clearMarks=()=>segs.forEach(s=>s.node.classList.remove('dim','lit'));
 
-function render(coreIdx,shadeIdx){
-  current={coreIdx,shadeIdx};
-  const core=DATA[coreIdx];
-  segs.forEach(s=>{
-    s.node.classList.toggle('dim', s.core!==coreIdx);
-    s.node.classList.toggle('lit', s.core===coreIdx && s.shade===shadeIdx);
-  });
+function render(t){
+  const core=WHEEL[t.ci];
+  clearMarks();
+  segs.forEach(s=>{if(s.ci!==t.ci)s.node.classList.add('dim')});
+  segs.find(s=>s.ci===t.ci&&s.si===t.si&&s.ti===t.ti).node.classList.add('lit');
+  const sw=`<span class="swatch" style="background:${core.col}"></span>`;
+  let html,brief;
 
-  if(shadeIdx===null){
-    panel.innerHTML=`
-      <div class="lineage"><span class="swatch" style="background:${core.color}"></span><span>Core emotion · 3 shades on the outer ring</span></div>
-      <h2 class="name">${core.name}</h2>
-      <p class="sounds">${core.shades.map(s=>s.name).join(' · ')}</p>
+  if(t.si===null){
+    html=`<div class="lineage">${sw}<span>Core emotion · ${core.sub.length} branches</span></div>
+      <h2 class="name">${core.c}</h2>
+      <div class="block" style="border:0;padding:0;margin:0 0 4px"><ul class="subs">${core.sub.map(s=>`<li>${s.n}</li>`).join('')}</ul></div>
       <div class="block"><h3>What it does in an ad</h3><p>${core.job}</p></div>
-      <div class="block"><h3>The angle it wants</h3><p>${core.angle}</p></div>
-      <div class="foot"><button id="copy">Copy this brief</button></div>`;
-    bindCopy(`Emotion target: ${core.name}\nJob: ${core.job}\nAngle: ${core.angle}`);
+      <div class="block"><h3>The angle it wants</h3><p>${core.angle}</p></div>`;
+    brief=`Emotion target: ${core.c}\nJob: ${core.job}\nAngle: ${core.angle}`;
+  } else if(t.ti===null){
+    const sub=core.sub[t.si];
+    html=`<div class="lineage">${sw}<span>${core.c} → ${sub.n}</span></div>
+      <h2 class="name">${sub.n}</h2>
+      <p class="reg">“${sub.reg}”</p>
+      <div class="block"><h3>What it does in an ad</h3><p>${sub.job}</p></div>
+      <div class="block"><h3>Hook in this register</h3><p class="hook">${sub.hook}</p></div>
+      <div class="block"><h3>The angle ${core.c.toLowerCase()} wants</h3><p>${core.angle}</p></div>
+      <div class="block"><h3>Sharper versions</h3><ul class="subs">${sub.t.map(x=>`<li>${x.n}</li>`).join('')}</ul></div>`;
+    brief=`Emotion target: ${sub.n} (${core.c})\nRegister: ${sub.reg}\nJob: ${sub.job}\nHook: ${sub.hook}\nAngle: ${core.angle}`;
   } else {
-    const sh=core.shades[shadeIdx];
-    panel.innerHTML=`
-      <div class="lineage"><span class="swatch" style="background:${core.color}"></span><span>A shade of ${core.name}</span></div>
-      <h2 class="name">${sh.name}</h2>
-      <p class="sounds">“${sh.sounds}”</p>
-      <div class="block"><h3>What ${core.name.toLowerCase()} does in an ad</h3><p>${core.job}</p></div>
-      <div class="block"><h3>The angle it wants</h3><p>${core.angle}</p></div>
-      <div class="block"><h3>Hooks to start from</h3><ul class="hooks">${sh.hooks.map(h=>`<li>${h}</li>`).join('')}</ul></div>
-      <div class="foot"><button id="copy">Copy this brief</button></div>`;
-    bindCopy(`Emotion target: ${sh.name} (${core.name})\nFeels like: ${sh.sounds}\nJob: ${core.job}\nAngle: ${core.angle}\nHooks:\n- ${sh.hooks.join('\n- ')}`);
+    const sub=core.sub[t.si],ter=sub.t[t.ti];
+    html=`<div class="lineage">${sw}<span>${core.c} → ${sub.n} → ${ter.n}</span></div>
+      <h2 class="name">${ter.n}</h2>
+      <p class="reg">“${ter.reg}”</p>
+      <div class="block"><h3>Hook in this register</h3><p class="hook">${ter.hook}</p></div>
+      <div class="block"><h3>What ${sub.n.toLowerCase()} does in an ad</h3><p>${sub.job}</p></div>
+      <div class="block"><h3>The angle ${core.c.toLowerCase()} wants</h3><p>${core.angle}</p></div>`;
+    brief=`Emotion target: ${ter.n} (${core.c} → ${sub.n})\nRegister: ${ter.reg}\nHook: ${ter.hook}\nJob: ${sub.job}\nAngle: ${core.angle}`;
   }
-}
-
-function bindCopy(text){
+  panel.innerHTML=html+`<div class="foot"><button id="copy">Copy this brief</button></div>`;
   const b=document.getElementById('copy');
   b.addEventListener('click',async()=>{
-    try{ await navigator.clipboard.writeText(text); b.textContent='Copied'; }
-    catch{ b.textContent='Copy blocked — select the text instead'; }
+    try{await navigator.clipboard.writeText(brief);b.textContent='Copied';}
+    catch{b.textContent='Copy blocked — select the text instead';}
     setTimeout(()=>b.textContent='Copy this brief',1800);
   });
 }
 
 function reset(){
-  current=null;
-  segs.forEach(s=>{s.node.classList.remove('dim','lit')});
-  statusEl.textContent='';
-  panel.innerHTML=`
-    <div class="empty">
-      <h2>Nothing targeted yet</h2>
-      <ol>
-        <li>Inner ring is the eight core emotions. Outer ring splits each into three shades, mild to intense.</li>
-        <li>Click one and you'll get the job it does, the angle it wants, and hooks.</li>
-        <li>Spin if you'd rather be handed a constraint than choose one.</li>
-      </ol>
-    </div>`;
+  clearMarks();statusEl.textContent='';
+  panel.innerHTML=`<div class="empty">
+    <h2>Nothing targeted yet</h2>
+    <ul class="rings">
+      <li><b>Inner</b><span>Seven core emotions, each sized by how many branches it has.</span></li>
+      <li><b>Middle</b><span>Forty-one specific states. This is usually the right level to write from.</span></li>
+      <li><b>Outer</b><span>Eighty-two exact registers. Use these when the hook needs a precise voice.</span></li>
+    </ul>
+    <p>One target per ad. If you can't name which of these you're aiming at, the ad is aiming at all of them, which means none.</p></div>`;
 }
 
 segs.forEach(s=>{
-  s.node.addEventListener('click',()=>{ if(!spinning) render(s.core,s.shade); });
-  s.node.addEventListener('keydown',e=>{
-    if((e.key==='Enter'||e.key===' ')&&!spinning){e.preventDefault();render(s.core,s.shade);}
-  });
+  const go=()=>{if(!spinning)render(s)};
+  s.node.addEventListener('click',go);
+  s.node.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
 });
 
 const spinBtn=document.getElementById('spin');
 spinBtn.addEventListener('click',()=>{
-  if(spinning) return;
-  const pick=shadeAngles[Math.floor(Math.random()*shadeAngles.length)];
+  if(spinning)return;
+  const pick=spinTargets[Math.floor(Math.random()*spinTargets.length)];
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   turns+=reduce?1:4+Math.floor(Math.random()*2);
-  const target=turns*360+pick.mid;
-  spinning=true; spinBtn.disabled=true;
-  segs.forEach(s=>s.node.classList.remove('dim','lit'));
-  statusEl.textContent='Spinning…';
-  needle.style.transform=`rotate(${target}deg)`;
+  spinning=true;spinBtn.disabled=true;clearMarks();statusEl.textContent='Spinning…';
+  needle.style.transform=`rotate(${turns*360+pick.mid}deg)`;
   const done=()=>{
-    spinning=false; spinBtn.disabled=false;
-    statusEl.textContent=`The wheel says: ${DATA[pick.core].shades[pick.shade].name}`;
-    render(pick.core,pick.shade);
+    spinning=false;spinBtn.disabled=false;
+    const core=WHEEL[pick.ci],sub=core.sub[pick.si];
+    statusEl.textContent=`The wheel says: ${pick.ti===null?sub.n:sub.t[pick.ti].n}`;
+    render(pick);
   };
-  if(reduce){ setTimeout(done,120); }
-  else { needle.addEventListener('transitionend',done,{once:true}); setTimeout(()=>{if(spinning)done();},4200); }
+  if(reduce){setTimeout(done,120);}
+  else{needle.addEventListener('transitionend',done,{once:true});setTimeout(()=>{if(spinning)done();},4200);}
 });
-
-document.getElementById('clear').addEventListener('click',()=>{ if(!spinning) reset(); });
-
+document.getElementById('clear').addEventListener('click',()=>{if(!spinning)reset()});
 reset();
 </script>
 </body>
